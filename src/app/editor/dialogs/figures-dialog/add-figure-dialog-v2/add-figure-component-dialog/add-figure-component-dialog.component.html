@@ -1,0 +1,71 @@
+<h2 mat-dialog-title *ngIf="data&&data.component">Edit Media</h2>
+<h2 mat-dialog-title *ngIf="!data||!data.component">Add Media</h2>
+
+<div class="pm-pdf-menu-container"></div>
+
+<mat-dialog-content class="dynamic-content-height">
+
+  <div class="figure-component-edit">
+
+    <div class="heading-container">
+      <div class="media-url">
+        <mat-label class="upper-label">URL</mat-label>
+        <mat-form-field class="file-url-control">
+          <input type="url" matInput [formControl]="urlFormControl"  #urlInputElement placeholder="http://example.url">
+          <!-- <mat-error *ngIf="urlFormControl.hasError('pattern') && !urlFormControl.hasError('required')">
+            Please enter a valid url.
+          </mat-error> -->
+          <mat-error *ngIf="urlFormControl.hasError('required')">
+            Url is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="media-type">
+        <mat-label class="upper-label">Media type</mat-label>
+        <mat-form-field class="type-edit-field" appearance="fill">
+          <mat-select [formControl]="typeFromControl">
+            <mat-option *ngFor="let type of types" [value]="type">
+              {{type}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="typeFromControl.hasError('required')">
+            Type is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div *ngIf="typeFromControl.value == 'image'">
+      <app-dropzone (uploaded)="fileIsUploaded($event)" (removed)="removeFile('image')" [fileType]="'image/*'"></app-dropzone>
+    </div>
+    <div *ngIf="typeFromControl.value == 'video'">
+      <app-dropzone (uploaded)="fileIsUploaded($event)" (removed)="removeFile('video')" [fileType]="'video/*'"></app-dropzone>
+    </div>
+    <div *ngIf="typeFromControl.value == 'embedded video'">
+      <app-dropzone [disabled]="true"></app-dropzone>
+    </div>
+    <div class="row-container">
+
+      <div class="description-edit-container">
+        <span class="upper-label">Media Description</span>
+        <div class="pm-editor pm-editor-override" #componentDescription></div>
+      </div>
+
+      <div class="figure-component-edit-preview">
+        <div *ngIf="typeFromControl.valid&&isUrlFormControlValid()">
+          <img *ngIf="typeFromControl.value == 'image'" src="{{urlFormControl.value}}" alt="">
+          <video  *ngIf="typeFromControl.value == 'video'"  [src]="urlFormControl.value | safe" width='320' height='240' controls="controls"></video>
+        <iframe *ngIf="typeFromControl.value == 'embedded video'" [src]="this.videoUrl | safe">
+        </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" fxLayoutGap="8px">
+  <button mat-stroked-button color="primary" (click)="closeDialog()">Cancel</button>
+  <button mat-flat-button color="primary" [disabled]="!typeFromControl.valid||!isUrlFormControlValid()" (click)="submitDialog()">Save</button>
+</mat-dialog-actions>

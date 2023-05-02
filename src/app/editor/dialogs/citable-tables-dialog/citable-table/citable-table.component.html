@@ -1,0 +1,9 @@
+<div *ngIf="table" class="figure figure-table">
+  <div class="figure-icon">
+    <img src="../../../../../assets/icons/table.svg" alt="{{table.header}}"/>
+  </div>
+  <div class="figure-index">
+    <strong>Table №{{tableIndex!+1}}</strong>
+    <span [innerHTML]="table.header"></span>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Cite End note</h2>
+
+<mat-dialog-content>
+  <div #noselectionError [ngStyle]="{'display':error?'block':'none'}" class="selection-error">
+    You have not selected any end notes.
+  </div>
+
+  <div class="mat-checkbox-group" fxLayout="column nowrap">
+    <mat-checkbox *ngFor="let endNoteId of endNotesNumbers;let i = index"
+                  class="example-margin"
+                  [checked]="selectedEndNotes[i]"
+                  [color]='"primary"'
+                  (change)="setSelection($event.checked,endNoteId,i)"
+    >
+      End Note {{i+1}}
+    </mat-checkbox>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" fxLayoutGap="8px">
+  <button mat-stroked-button [mat-dialog-close]>Cancel</button>
+  <button mat-stroked-button color="primary" (click)="addEndNote()">Add Note</button>
+  <button mat-flat-button color="primary" (click)="citateEndNotes()" [disabled]="selected.length == 0">Cite Notes</button>
+</mat-dialog-actions>
+

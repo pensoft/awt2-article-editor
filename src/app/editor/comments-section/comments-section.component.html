@@ -1,0 +1,60 @@
+<div class="search-comments">
+  <mat-form-field class="search-box-comments" appearance="fill" floatLabel="never">
+    <mat-icon class="search-icon" matPrefix>search</mat-icon>
+    <input [formControl]="searchForm" matInput #commentsInput placeholder="Search comments..." style="color: black !important;">
+  </mat-form-field>
+  <div class="results-from-search" *ngIf="searching">
+    <div class="number-results">
+      {{searchIndex+1}}/{{searchResults.length}}
+    </div>
+    <button mat-icon-button [disabled]="searchIndex == 0" (click)="selectPrevComFromSearch()"><mat-icon>arrow_upward</mat-icon></button>
+    <button mat-icon-button [disabled]="searchResults&&searchResults.length-1 == searchIndex" (click)="selectNextComFromSearch()"><mat-icon>arrow_downward</mat-icon></button>
+    <button mat-icon-button class="end-search-btn" (click)="endSearch()"><mat-icon>close</mat-icon></button>
+  </div>
+</div>
+<div class="comments-wrapper">
+  <div style="height:100%;" class="all-comments-container">
+    <div [ngStyle]="{'opacity':showAddCommentBox?'1':'0'}" class="add-comment-box">
+      <mat-card class="commentBox">
+        <mat-card-header>
+          <div class="mat-card-avatar-container">
+            <ngx-avatar mat-card-avatar size="36" [bgColor]="'#00B1B2'" [name]="prosemirrorEditorsService.userInfo.data.name"></ngx-avatar>
+            <span><img src="./assets/icons/comments-small.svg" alt="{{prosemirrorEditorsService.userInfo.data.name}}" /></span>
+          </div>
+          <mat-card-title class="commentBox-title">{{prosemirrorEditorsService.userInfo.data.name}}</mat-card-title>
+          <mat-card-subtitle class="commentBox-subtitle"></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="selected-comment-text">
+            <div class="selected-comment-text-title">Selected text:</div>
+            <div *ngIf="selectedTextInEditors[lastFocusedEditor!] && commentAllowdIn[lastFocusedEditor!]" class="selected-comment-text-content">{{selectedTextInEditors[lastFocusedEditor!]}}</div>
+            <div *ngIf="!commentAllowdIn[lastFocusedEditor!]" class="selected-comment-text-content-no-selection">{{errorMessages[lastFocusedEditor!]}}</div>
+          </div>
+
+          <input 
+          #input 
+          class="comment-input" 
+          type="text" placeholder="Leave a comment..."
+          (focus)="input.value && autocomplete.showResults()" 
+          [formControl]="commentInputFormControl" 
+          (keydown)="autocomplete.keyHandle($event)">
+          <app-collaborators-auto-complete (clickOutside)="clickOutsideHandler($event, autocomplete)" [(commentmarkId)]="newCommentMarkId" [(inputFormControl)]="commentInputFormControl" #autocomplete></app-collaborators-auto-complete>
+
+          <div class="comment-btns-container">
+            <div class="comment-btns" align="end" fxLayoutGap="12px">
+              <button mat-stroked-button (click)="cancelBtnHandle()">Cancel</button>
+              <button mat-flat-button color="primary"
+                      (click)="autocomplete.canFinishComment(commentBtnHandle,[input,input.value])"
+                      [disabled]="!selectedTextInEditors[lastFocusedEditor!] || input.value.length === 0 || !commentAllowdIn[lastFocusedEditor!]">
+                Comment
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div *ngFor="let comment of this.allComments" class="comment-container" style="opacity: 0;" attr.commentId="{{comment.commentAttrs.id}}" attr.sectionId="{{comment.section}}" #commentContainer>
+      <app-comment [comment]="comment" [(doneRenderingCommentsSubject)]="doneRenderingCommentsSubject" (selected)="changeParentContainer($event,commentContainer,comment)"></app-comment>
+    </div>
+  </div>
+</div>

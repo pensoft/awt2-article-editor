@@ -1,0 +1,16 @@
+<div [ngClass]="{
+  'prosemirror-textarea-wrapper-error': validity.length > 0 && !prosemirrorFocused,
+  'prosemirror-textarea-wrapper': validity.length <= 0 && !prosemirrorFocused,
+  'prosemirror-textarea-wrapper-focused': prosemirrorFocused
+}">
+  <div class="prosemirror-label-tag" *ngIf="options && instance && !options.noLabel"><span class="make-block-nodes-inline" [innerHTML]="(userSectionTitleAsLable?sectionTreeTitle:instance.component.label) | safehtml"></span></div>
+  <div #ProsemirrorEditor></div>
+
+  <mat-error class="pm-errors">
+    <div *ngIf="validity.length > 0 && !prosemirrorFocused">
+      {{ validity[0].message }}
+    </div>
+  </mat-error>
+</div>
+
+<textarea matInput [ngStyle]="{ display: 'none' }" #textarea></textarea>

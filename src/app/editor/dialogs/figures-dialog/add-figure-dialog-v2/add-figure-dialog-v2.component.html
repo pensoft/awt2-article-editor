@@ -1,0 +1,59 @@
+<h2 mat-dialog-title *ngIf="data&&data.figID">Edit Figure</h2>
+<h2 mat-dialog-title *ngIf="!data||!data.figID">Add Figure</h2>
+
+<div class="popup-menu-container"></div>
+
+<mat-dialog-content>
+
+  <div class="grid-edit">
+
+    <div class="heading-container">
+      <div class="figure-description">
+        <span class="upper-label">Figure Description</span>
+        <div class="pm-editor pm-editor-override" #figureDescription>
+        </div>
+      </div>
+
+      <div class="columns-select" fxLayout="column nowrap">
+        <mat-label class="upper-label">Num. of columns</mat-label>
+        <mat-form-field appearance="fill">
+          <mat-select [formControl]="columnsFormControl">
+            <mat-option *ngFor="let col of columns" [value]="col">
+              {{col}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="reorder-grid-content">
+      <div class="reorder-grid" cdkDropListGroup #gridContainer>
+        <div *ngFor="let component of figNewComponents; let i = index" cdkDropList [cdkDropListData]="i">
+          <div cdkDrag [cdkDragData]="i" (cdkDragEntered)="dragEntered($event)" class="reorder-box">
+            <div class="reorder-box-content">
+              <div class="drag-container">
+                <app-figure-component-preview [(component)]="figNewComponents[i]"></app-figure-component-preview>
+              </div>
+              <div class="actions-container">
+                <button mat-stroked-button color="primary" (click)="editComponent(component,i)">Edit</button>
+                <button mat-stroked-button color="warn" (click)="deleteComponent(component,i)">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div #codemirrorHtmlTemplate class='codemirror-editor' [ngStyle]="{'display': showHTMLEditor ? 'block' : 'none'}"></div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" fxLayoutGap="8px">
+  <button mat-stroked-button [mat-dialog-close]>Cancel</button>
+  <button *ngIf="!config.production" mat-stroked-button color="{{showHTMLEditor?'primary':'accent'}}" (click)="showHTMLEditor=!showHTMLEditor">Edit HTML</button>
+  <button mat-stroked-button color="primary" (click)="openFigurePdfPreview()" [disabled]="figNewComponents.length == 0">Print Preview</button>
+  <button mat-stroked-button color="primary" (click)="addComponent()">Add Media</button>
+  <button mat-flat-button color="primary" (click)="submitFigure()" [disabled]="figNewComponents.length == 0">Save</button>
+</mat-dialog-actions>

@@ -1,0 +1,205 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '~@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$article-editor-primary: mat.define-palette(mat.$indigo-palette);
+$article-editor-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$article-editor-warn: mat.define-palette(mat.$red-palette);
+
+$article-editor-font: mat.define-typography-config(
+  $font-family: var(--font-family-open-sans),
+);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+
+$article-editor-theme: mat.define-light-theme((
+  color: (
+    primary: $article-editor-primary,
+    accent: $article-editor-accent,
+    warn: $article-editor-warn,
+  ),
+  typography: $article-editor-font,
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($article-editor-theme);
+
+:root {
+
+  /* Colors: */
+  --color-707070: #707070;
+  --color-e56b87: #E56B87;
+  --color-ffd0d0: #FFD0D0;
+  --color-deffc9: #DEFFC9;
+  --color-559efe: #559EFE;
+  --color-bdd9ff: #BDD9FF;
+  --color-192956: #192956;
+  --color-00b1b2: #00B1B2;
+  --color-a6dee0: #A6DEE0;
+  --color-aedbd0: #AEDBD0;
+  --color-e5f6f6: #E5F6F6;
+  --color-cacdd3: #CACDD3;
+  --color-e3e3e3: #E3E3E3;
+  --color-ffffff: #FFFFFF;
+  --color-efefef: #EFEFEF;
+  --color-000000: #000000;
+  --color-121212: #121212;
+  --color-242424: #242424;
+  --color-1bb1b2: #1BB1B2;
+  --color-818181: #818181;
+  --color-f1f2f2: #F1F2F2;
+  --color-f9fafc: #F9FAFC;
+  --color-8890a8: #8890A8;
+  --color-00999a: #00999A;
+  --color-abaaac: #ABAAAC;
+  --color-e4f6f6: #E4F6F6;
+  --color-f5f5f5: #F5F5F5;
+  --color-f7f9fb: #F7F9FB;
+  --color-1bb1b224: #1BB1B224;
+  --color-676767: #676767;
+
+  /* Font/text values */
+  --font-family-open-sans: Open Sans;
+  --font-style-normal: normal;
+  --font-weight-600: 600;
+  --font-weight-bold: bold;
+  --font-weight-normal: normal;
+  --font-size-12: 12px;
+  --font-size-13: 13px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-32: 32px;
+  --font-size-45: 45px;
+  --character-spacing-0: 0px;
+  --line-spacing-11: 11px;
+  --line-spacing-17: 17px;
+  --line-spacing-18: 18px;
+  --line-spacing-19: 19px;
+  --line-spacing-22: 22px;
+  --line-spacing-24: 24px;
+  --line-spacing-36: 36px;
+  --line-spacing-45: 45px;
+  --line-spacing-48: 48px;
+  --line-spacing-50: 50px;
+  --line-spacing-56: 56px;
+  --line-spacing-60: 60px;
+  --decoration-underline: underline;
+}
+
+/* Character Styles */
+.character-style-1 {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-600);
+  font-size: var(--font-size-14);
+  line-height: var(--line-spacing-24);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-00b1b2);
+  text-decoration: var(--decoration-underline);
+}
+.character-style-2 {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-12);
+  line-height: var(--line-spacing-36);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-121212);
+}
+.character-style-3 {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-12);
+  line-height: var(--line-spacing-36);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-121212);
+}
+.character-style-4 {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-14);
+  line-height: var(--line-spacing-24);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-242424);
+}
+.character-style-5 {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-16);
+  line-height: var(--line-spacing-24);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-242424);
+}
+.character-style-6 {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-32);
+  line-height: var(--line-spacing-48);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-121212);
+}
+.character-style-7 {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-45);
+  line-height: var(--line-spacing-60);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-121212);
+}
+.character-style-8 {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-600);
+  font-size: var(--font-size-12);
+  line-height: var(--line-spacing-17);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-1bb1b2);
+}
+.character-style-9 {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-14);
+  line-height: var(--line-spacing-19);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-000000);
+}
+.character-style-10 {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-16);
+  line-height: var(--line-spacing-22);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-000000);
+}
+.character-style-11 {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-14);
+  line-height: var(--line-spacing-19);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-000000);
+}

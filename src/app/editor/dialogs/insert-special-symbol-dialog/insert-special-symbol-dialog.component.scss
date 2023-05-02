@@ -1,0 +1,142 @@
+.title {
+  font-family: var(--font-family-open-sans);
+  font-style: var(--font-style-normal);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-18);
+  line-height: var(--line-spacing-24);
+  letter-spacing: var(--character-spacing-0);
+  color: var(--color-192956);
+  margin: 9px 0px 11px 0px;
+}
+
+.select-symbols {
+  display: block;
+  width: 100%;
+  margin: 5px;
+  background-color: var(--color-00b1b2);
+  padding: 6px;
+  color: white;
+  font-size: 15px;
+  line-height: 20px;
+  border-radius: 6px;
+  border-color: transparent;
+}
+
+.char-select {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  position: relative;
+  width: 24px;
+  border-radius: 50%;
+  height: 24px;
+  text-align: center;
+  padding: 6px;
+  box-sizing: content-box;
+}
+
+.selected {
+  background-color: rgba(0, 177, 178, 0.15);
+  border-radius: 6px;
+}
+
+::ng-deep .select-symbols-parent select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-down' viewBox='0 0 16 16'> <path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/> </svg>");
+  background-repeat: no-repeat;
+  background-position-x: 97%;
+  background-position-y: 9px;
+  border: 1px solid #dfdfdf;
+  border-radius: 2px;
+  margin-right: 2rem;
+  padding: 1rem;
+  padding-right: 2rem;
+}
+
+
+.content {
+  .search-box {
+    margin-left: -4px;
+    margin-bottom: 14px;
+
+    ::ng-deep {
+      .arpha-input-container {
+        border-radius: 20px !important;
+      }
+
+      input {
+        border-radius: 20px !important;
+      }
+    }
+  }
+
+  .filter-box {
+    margin-left: -4px;
+    margin-bottom: 50px;
+
+    arpha-button {
+      &:not(:first-child) {
+        margin-left: 21px;
+      }
+    }
+
+    ::ng-deep {
+      button {
+        width: 100px;
+        height: 30px;
+      }
+    }
+  }
+
+  .content-box {
+    height: 210px;
+    overflow: auto;
+    margin-bottom: 55px;
+
+    mat-icon {
+      width: 22px;
+    }
+  }
+}
+
+::ng-deep {
+  .mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: var(--color-00b1b2) !important;
+  }
+}
+
+.actions {
+  float: right;
+
+  .action-button {
+    &:first-of-type {
+      margin-right: 21px;
+    }
+
+    &:last-of-type {
+      margin-right: -3px;
+    }
+
+    ::ng-deep {
+      button {
+        width: 100px !important;
+        height: 33px !important;
+      }
+    }
+  }
+
+  .negative-button {
+    ::ng-deep {
+      button {
+        color: var(--color-676767) !important;
+        border-color: var(--color-676767) !important;
+        opacity: 0.69;
+      }
+    }
+  }
+}

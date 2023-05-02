@@ -1,0 +1,295 @@
+<mat-toolbar class="controls-toolbar" color="primary">
+  <mat-toolbar-row class="controls-toolbar-row">
+    <div class="left-group">
+
+      <button (click)="clickEditorTab()" color="primary" mat-button [class.active]="active=='editor'"
+               [disabled]="true" [ngSwitch]="userAccess">
+        <ng-container *ngSwitchCase="'Owner'">
+          <mat-icon svgIcon="edit1"></mat-icon>
+          <span style="margin-left:2px">Owner</span>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Edit & comment'">
+          <mat-icon svgIcon="edit1"></mat-icon>
+          <span style="margin-left:2px">Editor</span>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Comment only'">
+          <mat-icon svgIcon="comments"></mat-icon>
+          <span style="margin-left:2px">Commenter</span>
+        </ng-container>
+        <ng-container *ngSwitchCase="'View only'">
+          <mat-icon svgIcon="eyeGreen"></mat-icon>
+          <span style="margin-left:2px">Viewer</span>
+        </ng-container>
+      </button>
+     <!--  <button *ngIf="
+                enforcer.newBeahviorSubject |
+                hasPermission:'/references/items':
+                'GET' |
+                async
+                " (click)="active='library'" mat-button [class.active]="active=='library'"
+              style="color:var(--color-192956)">
+        <mat-icon svgIcon="library"></mat-icon>
+        <span style="margin-left:5px">Library</span>
+      </button> -->
+      <button (click)="openDialog();" color="primary" mat-button [class.active]="active=='contributors'">
+        <mat-icon svgIcon="contributors"></mat-icon>
+        <span style="margin-left:5px">Contributors</span>
+      </button>
+    </div>
+    <div class="middle-group" [ngStyle]="{'display':active == 'editor'?'flex':'none'}">
+      <mat-form-field class="title-form-control" appearance="legacy" color="black">
+        <textarea matInput [formControl]="titleControl" rows="1" wrap="off"></textarea>
+      </mat-form-field>
+      <div class="right-avatars">
+        <div class="more-avatar">
+          <!--          {{usersInArticle.length}} {{usersInArticle | json}}-->
+          <ng-container *ngFor="let user of usersInArticle | skipCurrent; index as i">
+            <ngx-avatar class="avatar" *ngIf="user&&user.userInfo&&user.userInfo.data&&i<2" size="36"
+                        [gravatarId]="user.userInfo.data.email" [name]="user.userInfo.data.name"
+                        [fgColor]="(user.userInfo.color&&user.userInfo.color.userContrastColor)?user.userInfo.color.userContrastColor:null"
+                        [bgColor]="(user.userInfo.color&&user.userInfo.color.userColor)?user.userInfo.color.userColor:null"
+                        [matTooltip]="user.userInfo.data.name"></ngx-avatar>
+            <!--            <app-avatar user="user"></app-avatar>-->
+          </ng-container>
+
+          <ng-container *ngIf="usersInArticle.length > 3">
+
+            <button mat-mini-fab color="accent" [matMenuTriggerFor]="avatars_menu" aria-label="Show all avatars">
+              +{{ usersInArticle.length - 3 }}
+            </button>
+            <mat-menu #avatars_menu="matMenu" class="article-users-list">
+              <ng-container *ngFor="let user of usersInArticle | skipCurrent; index as i">
+                <mat-card class="user-card" *ngIf="user&&user.userInfo&&user.userInfo.data&&i>1">
+                  <mat-card-header>
+                    <div mat-card-avatar>
+                      <ngx-avatar class="avatar-container" size="36" [gravatarId]="user.userInfo.data.email"
+                                  [name]="user.userInfo.data.name"
+                                  [fgColor]="(user.userInfo.color&&user.userInfo.color.userContrastColor)?user.userInfo.color.userContrastColor:null"
+                                  [bgColor]="(user.userInfo.color&&user.userInfo.color.userColor)?user.userInfo.color.userColor:null"></ngx-avatar>
+                    </div>
+                    <mat-card-title>{{ user.userInfo.data.name }}</mat-card-title>
+                    <mat-card-subtitle>{{ user.userInfo.data.email }}</mat-card-subtitle>
+                  </mat-card-header>
+                </mat-card>
+              </ng-container>
+
+            </mat-menu>
+
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-group" [ngStyle]="{'display':active == 'editor'?'flex':'none','align-items':'center'}">
+
+      <span class="vertical-delimiter"></span>
+
+      <arpha-button (clickEvent)="print()"
+                    [disabled]="true"
+                    label="Print"
+                    class="small secondary">
+      </arpha-button>
+      <arpha-button (clickEvent)="export()"
+                    label="Export"
+                    class="small primary">
+      </arpha-button>
+      <arpha-button (clickEvent)="submit()"
+                    [disabled]="true"
+                    label="Submit"
+                    class="small primary">
+      </arpha-button>
+    </div>
+
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div *ngIf="shouldBuild" class="main-editor-container"
+    [ngStyle]="{'display':active == 'editor'?'flex':'none'}">
+  <div class="actions-container">
+    <!-- <div *ngIf="innerWidth<=600" class="tree_btn_container">
+        <button (click)="showTreeContainer()" class="editor_tree_btn_mobile" mat-icon-button>
+    <mat-icon>account_tree</mat-icon>
+    </button>
+    </div> -->
+    <div class="left-column-placeholder">
+      <div class="template-name-placeholder">
+        <span class="template-label">Template</span>
+        <div class="template-name">
+          <span>{{articleTemplate}}</span>
+          <div class="template-img-placeholder">
+            <img class="template-img" alt="undo-icon" src="./assets/icons/undo.svg" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="prosemirror_menu_container">
+      <app-editor-menu [ngStyle]="{'display':(userAccess == 'Comment only'||userAccess == 'View only')?'none':'block'}">
+      </app-editor-menu>
+    </div>
+
+
+    <div class="side-navbar-actions">
+      <button *ngIf="!(userAccess == 'Comment only'||userAccess == 'View only')" #trackChangesOnOffBtn
+              mat-icon-button
+              class="changes_state_btn" [matMenuTriggerFor]="beforeMenu" title="Start tracking changes">
+        <mat-icon *ngIf="previewMode.mode">visibility</mat-icon>
+        <mat-icon *ngIf="!previewMode.mode && !this.shouldTrackChanges">mode_edit</mat-icon>
+        <mat-icon  *ngIf="!previewMode.mode && this.shouldTrackChanges">drive_file_rename_outline</mat-icon>
+        </button>
+      <mat-menu #beforeMenu="matMenu" xPosition="before">
+
+        <button (click)="turnOnOffTrackChanges(false)" mat-menu-item>
+          <mat-icon [ngClass]="{'selected-article-edit-option':!previewMode.mode && !this.shouldTrackChanges}">mode_edit</mat-icon>
+          <span>Edit</span>
+        </button>
+
+        <button (click)="turnOnOffTrackChanges(true)" mat-menu-item>
+          <mat-icon [ngClass]="{'selected-article-edit-option':!previewMode.mode && this.shouldTrackChanges}">drive_file_rename_outline</mat-icon>
+          <span>Suggest</span>
+        </button>
+
+        <button (click)="turnOnOffPreviewMode()" mat-menu-item>
+          <mat-icon [ngClass]="{'selected-article-edit-option':previewMode.mode}">visibility</mat-icon>
+          <span>Preview</span>
+        </button>
+
+      </mat-menu>
+      <button (click)="toggleSidebar('validation')" mat-icon-button [class.active]="sidebar=='validation'" title="Validate this manuscript">
+        <mat-icon svgIcon="validate"></mat-icon>
+      </button>
+
+      <button (click)="toggleSidebar('changes')" mat-icon-button [class.active]="sidebar=='changes'" title="Track changes">
+        <mat-icon svgIcon="reference"></mat-icon>
+      </button>
+
+      <button (click)="toggleSidebar('taxons')" mat-icon-button [class.active]="sidebar=='taxons'" title="Taxon finder">
+        <mat-icon>hub</mat-icon>
+      </button>
+
+      <button class="open-comments-sidebar" (click)="toggleSidebar('comments')" mat-icon-button
+              [class.active]="sidebar=='comments'" title="Comments">
+        <mat-icon [matBadgeHidden]="noComments" matBadge="{{commentsNumberChange | async}}" matBadgeSize="small" matBadgeColor="warn"
+                  svgIcon="comments"></mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="scrollable-editor-content">
+    <mat-drawer-container hasBackdrop='false' class="editor-drawer">
+    <div class="main-container">
+
+      <div #treeDataDiv class="data-tree no-scroll">
+        <app-meta-data-tree></app-meta-data-tree>
+        <app-article-metadata></app-article-metadata>
+      </div>
+
+      <div class="editor-container">
+        <div class="editor-content">
+          <app-article id="app-article-element"></app-article>
+          <div [ngStyle]="{'display':(userAccess == 'View only')?'none':'block'}" class="editor_buttons">
+          <div class="editor_buttons_wrapper">
+            <div class="commentBtnDiv">
+              <button class="commentsBtn" mat-icon-button>
+                <mat-icon svgIcon="comments"></mat-icon>
+              </button>
+            </div>
+            <div class="tag-words-btn-div"
+                  [ngStyle]="{
+                    'display':(userAccess == 'Comment only'||userAccess == 'View only'||!canCreateTag || !(canShowTaxonButtons | async))?'none':'block'
+                  }"
+            >
+              <button (click)="taxonService.tagText(false)"
+                      [ngClass]="'tag_text_as_taxon_side_btn'"
+                      [matTooltip]="'Tag this text as Taxon.'"
+                      class="tag-single" mat-icon-button>
+                <mat-icon >bookmark</mat-icon>
+              </button>
+            </div>
+            <div class="tag-words-btn-div"
+                  [ngStyle]="{
+                    'display':(userAccess == 'Comment only'||userAccess == 'View only'||!canCreateTag || !(canShowTaxonButtons | async))?'none':'block'
+                  }"
+            >
+              <button (click)="taxonService.tagText(true)" [ngClass]="'tag_text_as_taxon_side_btn'" [matTooltip]="'Tag all occurrence of this text as Taxon.'"
+                      class="tag-multiple" mat-icon-button>
+                <mat-icon >bookmarks</mat-icon>
+              </button>
+            </div>
+            <div class="citable-items-edit-btn-container">
+              <button
+              class="edit-citable-button"
+              [ngStyle]="{
+                'display':(userAccess == 'Comment only'||userAccess == 'View only')?'none':'block'
+              }"
+              >
+                <img class="edit-citation-img" src="./assets/icons/edit-green.svg"/>
+              </button>
+            </div>
+            <div class="edit-cite-ref-btn-container">
+              <button
+              title="Edit Reference Citation"
+              class="edit-cite-ref-button"
+              [ngStyle]="{
+                'display':(userAccess == 'Comment only'||userAccess == 'View only')?'none':'block'
+              }"
+              >
+                <img class="edit-citation-img" src="./assets/icons/refCitation.svg"/>
+              </button>
+            </div>
+            <div class="delete-citation-btn-container">
+              <button
+              title="Delete Reference Citation" 
+              class="delete-citation-btn"
+              [ngStyle]="{
+                'display':(userAccess == 'Comment only'||userAccess == 'View only')?'none':'block'
+              }"
+              >
+                <img class="delete-citation-img" src="./assets/icons/delete_forever-red.svg"/>
+              </button>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <mat-drawer #sidebarDrawer class="sidebar-container" mode="side" position="end">
+      <editor-sidebar [sidebar]="sidebar"></editor-sidebar>
+    </mat-drawer>
+  </mat-drawer-container>
+  </div>
+</div>
+
+<button mat-fab class="floating-button" [matMenuTriggerFor]="menu2" *ngIf="active == 'editor'">
+  <mat-icon>more_vert</mat-icon>
+</button>
+
+<mat-menu #menu2="matMenu" class="floating-menu">
+  <button #trackChangesOnOffBtn [ngClass]="shouldTrackChanges?'changes_on_btn_mobile':'changes_off_btn_mobile'"
+          class="changes_state_btn_mobile" mat-menu-item [matMenuTriggerFor]="beforeMenu">
+    <mat-icon>border_color</mat-icon>
+  </button>
+  <button (click)="toggleSidebar('validation')" mat-menu-item>
+    <mat-icon svgIcon="validate"></mat-icon>
+  </button>
+  <button (click)="toggleSidebar('comments')" mat-menu-item>
+    <mat-icon svgIcon="comments"></mat-icon>
+  </button>
+  <button (click)="toggleSidebar('changes')" mat-menu-item>
+    <mat-icon svgIcon="reference"></mat-icon>
+  </button>
+  <button (click)="toggleSidebar('taxons')" mat-menu-item>
+    <mat-icon>hub</mat-icon>
+  </button>
+</mat-menu>
+
+<mat-menu #beforeMenu="matMenu" xPosition="before" yPosition='below'>
+  <button (click)="turnOnOffTrackChanges(true)" mat-menu-item>
+    <mat-icon [ngClass]="{'selected-article-edit-option':!previewMode.mode && !this.shouldTrackChanges}">mode_edit</mat-icon>
+    <span>Edit</span>
+  </button>
+  <button (click)="turnOnOffTrackChanges(false)" mat-menu-item>
+    <mat-icon [ngClass]="{'selected-article-edit-option':!previewMode.mode && this.shouldTrackChanges}">drive_file_rename_outline</mat-icon>
+    <span>Suggest</span>
+  </button>
+</mat-menu>

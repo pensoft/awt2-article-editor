@@ -1,0 +1,30 @@
+<h2 mat-dialog-title *ngIf="data&&data.endNoteID">Edit Endnote</h2>
+<h2 mat-dialog-title *ngIf="!data||!data.endNoteID">Add Endnote</h2>
+
+<div class="popup-menu-container"></div>
+
+<mat-dialog-content>
+  <div [formGroup]="sectionForm">
+    <div #codemirrorHtmlTemplate class='codemirror-editor' [ngStyle]="{'display': hidehtml ? 'none' : 'block'}"></div>
+    <ng-container *ngIf='renderForm'>
+      <div>
+        <mat-formio #formio [form]="sectionContent" (change)="onChange($event)" (submit)="onSubmit($event)"></mat-formio>
+      </div>
+    </ng-container>
+  </div>
+
+  <div style="display: none;">
+    <div #container>
+
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" fxLayoutGap="8px">
+  <button mat-stroked-button [mat-dialog-close]>Cancel</button>
+  <button *ngIf="!config.production" mat-stroked-button color="primary" (click)="hidehtml=!hidehtml">Edit HTML</button>
+  <button mat-flat-button color="primary" (click)="submitEndNote()" [disabled]="!isValid">Save</button>
+</mat-dialog-actions>
+
+
+

@@ -1,0 +1,193 @@
+<section class="dashboard-container">
+  <div class="container-shadow bg-white">
+    <article fxLayout="row" fxFill>
+      <div class="mt20px p26px">
+        <button *ngIf="
+        enforcer.newBeahviorSubject| hasPermission:
+        '/articles/items':
+        'POST' |
+        async" (click)="openchooseDialog()" class="btn-start-new-project">
+          <mat-icon svgIcon="dasboardNewProject" class="icon-plus"></mat-icon>
+          <span>Start Manuscript</span>
+        </button>
+      </div>
+    </article>
+    <article fxLayout="row" fxLayoutAlign="start center">
+      <form fxFlex="100%" fxLayoutGap="32px" fxLayoutAlign="start center"
+            class="search-form p26px" >
+
+        <mat-form-field class="mat-form-field-search is-small has-fixed-width" appearance="fill">
+          <input type="text"
+                 (keydown)="search(inputText)"
+                 #inputText
+                 class="input-search"
+                 placeholder="Search by name"
+                 matInput
+                 autocomplete="off">
+          <mat-icon matPrefix class="prefix-icon">search</mat-icon>
+        </mat-form-field>
+        <mat-form-field class="width-select">
+          <mat-label class="type-select-label">Template</mat-label>
+          <input
+           class="type-input"
+           type="text"
+           #typeInput
+           matInput
+           (keydown)="filterByType(typeInput, $event)"
+           (focus)="focusHandler()"
+           (clickOutside)="filterByType(typeInput, $event)"
+           [formControl]="templateTypeControl"
+           [matAutocomplete]="layoutsGroup">
+          <mat-autocomplete  #layoutsGroup="matAutocomplete" >
+              <mat-option class="template-option"
+                *ngFor="let type of (filteredAutocompleteTemplates | async) || articleLayouts"
+                [value]="type.name">
+                    {{type.name}}
+              </mat-option>
+          </mat-autocomplete>
+          <mat-icon class="icon" *ngIf="typeInput.value.length > 0" (click)="removeTypeInputText(typeInput)">close</mat-icon>
+          <mat-icon class="icon">keyboard_arrow_down</mat-icon>
+          <!-- <mat-select #matSelect (selectionChange)="filterByType(matSelect.value)">
+            <ng-container *ngFor="let type of articleLayouts">
+              <mat-option value="{{type.id}}">{{type.name}}</mat-option>
+            </ng-container>
+          </mat-select> -->
+        </mat-form-field>
+      </form>
+    </article>
+
+    <div class="searchDiv"></div>
+    <div class="example-loading-shade p26px" *ngIf="isLoadingResults || isRateLimitReached">
+      <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+      <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+        GitHub's API rate limit has been reached. It will be reset in one minute.
+      </div>
+    </div>
+
+    <div class="dashboard-table-container p26px">
+
+      <table mat-table [dataSource]="data" class="example-table dashboard-table" matSort matSortActive="created"
+             matSortDisableClear matSortDirection="desc">
+
+        <!--
+       <ng-container matColumnDef="template-type">
+         <th mat-header-cell *matHeaderCellDef>Type</th>
+         <td mat-cell *matCellDef="let row">
+           <span>{{row.layout ? row.layout.template.name + ' v.' + row.layout.template.version : '---'}}</span>
+         </td>
+       </ng-container>
+       -->
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>ID</th>
+          <td mat-cell *matCellDef="let row">{{row.id}}</td>
+        </ng-container>
+
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Title</th>
+          <td mat-cell *matCellDef="let row" (click)="editArticle(row)" style="cursor:pointer;">
+            <span>{{row.name}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Layout Column -->
+        <ng-container matColumnDef="layout-type">
+          <th mat-header-cell *matHeaderCellDef>Template</th>
+          <td mat-cell *matCellDef="let row">
+<!--            <span>{{row.layout ? row.layout.name + ' v.' + row.layout.version : 'DELETED'}}</span>-->
+            <span>{{row.layout ? row.layout.name : 'DELETED'}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Updated Column -->
+        <ng-container matColumnDef="lastupdated">
+          <th mat-header-cell *matHeaderCellDef>Last updated</th>
+          <td mat-cell *matCellDef="let row">{{row.updated_at | date:'yyyy-MM-dd' }}</td>
+        </ng-container>
+
+        <!-- Created Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Date</th>
+          <td mat-cell *matCellDef="let row">{{row.created_at | date:'yyyy-MM-dd'}}</td>
+        </ng-container>
+
+        <!-- Author Column -->
+        <ng-container matColumnDef="autor">
+          <th mat-header-cell *matHeaderCellDef>Authors</th>
+          <td mat-cell *matCellDef="let row">
+            <div class="more-avatar">
+
+              <ngx-avatar class="avatar" size="36" [gravatarId]="row.user.email" [name]="row.user.name" [matTooltip]="row.user.name"></ngx-avatar>
+
+              <ng-container *ngFor="let collaborator of row.collaborators index as i">
+                <ngx-avatar class="avatar" *ngIf="i<2" size="36" [gravatarId]="collaborator.user_email"
+                            [name]="collaborator.user_name??collaborator.type" [matTooltip]="collaborator.user_name"></ngx-avatar>
+              </ng-container>
+
+              <ng-container *ngIf="row.collaborators.length > 2">
+
+                <button mat-mini-fab color="accent" [matMenuTriggerFor]="avatars_menu" aria-label="Show all avatars">
+                  +{{ row.collaborators.length - 2 }}
+                </button>
+
+                <mat-menu #avatars_menu="matMenu" class="article-users-list">
+
+                  <ng-container *ngFor="let collaborator of row.collaborators; index as i">
+                    <mat-card class="user-card" *ngIf="i>1">
+                      <mat-card-header>
+                        <div mat-card-avatar>
+                          <ngx-avatar class="avatar-container" size="36" [gravatarId]="collaborator.user_email"
+                                      [name]="collaborator.user_name??collaborator.type"></ngx-avatar>
+                        </div>
+                        <mat-card-title>{{ collaborator.user_name }}</mat-card-title>
+                        <mat-card-subtitle>{{ collaborator.user_email }}</mat-card-subtitle>
+                      </mat-card-header>
+                    </mat-card>
+                  </ng-container>
+
+                </mat-menu>
+
+              </ng-container>
+
+
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="buttons">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row" align="end">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu class="buttons-menu" #menu="matMenu" xPosition="after">
+              <!-- <button mat-menu-item>
+                <mat-icon svgIcon="dashboardClock" class="clock-icon"></mat-icon>
+              </button> -->
+              <button mat-menu-item (click)="editArticle(row)">
+                <mat-icon svgIcon="dashboardEdit" class="edit-icon"></mat-icon>
+              </button>
+              <button mat-menu-item (click)="deleteArticle(row)">
+                <mat-icon svgIcon="dashboardDelete" class="delete-icon"></mat-icon>
+              </button>
+            </mat-menu>
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="paginator dashboard-paginator" fxLayoutAlign="center center">
+    <mat-paginator [pageSize]="7" [length]="resultsLength">
+    </mat-paginator>
+  </div>
+
+</section>

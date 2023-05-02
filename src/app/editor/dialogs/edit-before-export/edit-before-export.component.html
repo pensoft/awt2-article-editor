@@ -1,0 +1,70 @@
+
+<div class="pm-toolbar">
+  <div class="pm-pdf-menu-container"></div>
+  <div class='hf-fields'>
+
+    <div class="pm-editor-label">
+      Header:
+    </div>
+    <div class="pm-editor-label">
+      Footer:
+    </div>
+  </div>
+  <div class='hf-fields'>
+
+    <div class="pm-editor" #headerPMEditor>
+
+    </div>
+    <div class="pm-editor" #footerPMEditor>
+
+    </div>
+  </div>
+</div>
+<div class='preview-container'>
+  <div class="margineditor-and-pdf-container">
+    <div class="margin-editor" #codemirrorJson></div>
+    <!-- <iframe class="pdfVi1" id='pdfV'></iframe> -->
+  </div>
+  <div class="loader" #spinnerEl style="display: none;">
+    <div class="spinnerSpace"><img spinner class="spinnerImg" src="./../../../../assets/icons/spinner.svg" alt=""></div>
+  </div>
+</div>
+<p id="width-measure-container" style="display:inline-block">
+
+</p>
+<mat-toolbar class="toolbar">
+  <button mat-raised-button (click)="renderPdf()">Render PDF</button>
+  <!-- <div class="select-format">
+    <mat-label class="format-label">Choose format:</mat-label>
+    <mat-select [(value)]="pageSize">
+      <mat-option value="A0">A0</mat-option>
+      <mat-option value="A1">A1</mat-option>
+      <mat-option value="A2">A2</mat-option>
+      <mat-option value="A3">A3</mat-option>
+      <mat-option value="A4">A4</mat-option>
+      <mat-option value="A5">A5</mat-option>
+    </mat-select>
+  </div>
+  <div class='margin-fields'>
+    <mat-form-field class="margin-field" appearance="fill">
+      <mat-label class="margin-label">Margin Top:</mat-label>
+      <input type="number" matInput [formControl]="margTopControl">
+    </mat-form-field>
+    <mat-form-field class="margin-field" appearance="fill">
+      <mat-label class="margin-label">Margin Right:</mat-label>
+      <input type="number" matInput [formControl]="margRightControl">
+    </mat-form-field>
+    <mat-form-field class="margin-field" appearance="fill">
+      <mat-label class="margin-label">Margin Bottom:</mat-label>
+      <input type="number" matInput [formControl]="margBottomControl">
+    </mat-form-field>
+    <mat-form-field class="margin-field" appearance="fill">
+      <mat-label class="margin-label">Margin Left:</mat-label>
+      <input type="number" matInput [formControl]="margLeftControl">
+    </mat-form-field>
+  </div> -->
+
+  <div class="right-btn-container">
+    <button mat-raised-button (click)="closePdfPrintDialog()">Close</button>
+  </div>
+</mat-toolbar>

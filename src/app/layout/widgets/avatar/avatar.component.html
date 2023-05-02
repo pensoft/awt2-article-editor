@@ -1,0 +1,17 @@
+<!-- <ngx-avatar [round]="true" size="35"
+name="{{userAvatarInfo.name}}" 
+
+gravatarId="{{userAvatarInfo.gravatarId}}">
+</ngx-avatar> -->
+
+<ngx-avatar *ngIf="userAvatarInfo.name" [round]="true" name="{{userAvatarInfo.name}}"></ngx-avatar>
+<div class="img-container">
+    <img ngxGravatar *ngIf="!userAvatarInfo.name" email="{{gravatarEmail.email}}" />
+    <button class="edit-img-button">
+        <span>EDIT</span>
+    </button>
+</div>
+
+<!-- <img ngxGravatar md5Hash="{{gravatarEmail.gravatarId}}"/>
+<div ngxGravatar  fallback="indenticon" style="border: 1px solid red">gggg
+</div> -->

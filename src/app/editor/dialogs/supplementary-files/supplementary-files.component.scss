@@ -1,0 +1,24 @@
+.tables-container {
+  display: block;
+  height: 100%;
+  width: 100%;
+  .tables-list {
+      .table-box {
+          margin: 10px;
+          border: 2px solid #98f7eb;
+          border-radius: 6px;
+          .example-custom-placeholder {
+          }
+          .table-view {
+          }
+          .table-control-buttons {
+          }
+      }
+      overflow-y: auto;
+      height: calc(100% - 45px);
+  }
+  .table-buttons {
+      height: 36px;
+      margin-top: 12px;
+  }
+}

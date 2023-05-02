@@ -1,0 +1,96 @@
+<h2 mat-dialog-title>Edit Contributor</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="editUserForm" fxLayout="column nowrap">
+
+    <mat-label class="upper-label"><mat-label>Permissions</mat-label></mat-label>
+    <mat-form-field floatLabel='never' class="form-access" appearance="fill" fxFlex="48">
+
+      <mat-select formControlName="accessSelect">
+        <mat-option *ngFor="let option of accessOptions" [value]="option.name">{{option.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-label class="upper-label">Role</mat-label>
+    <mat-form-field floatLabel='never' class="form-role" appearance="fill" fxFlex="48">
+      <mat-select formControlName="roleSelect">
+        <mat-option *ngFor="let option of roleOptions" [value]="option.name">{{option.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="affiliations-container" *ngIf="roleSelect.value == 'Author'||roleSelect.value == 'Co-author'" >
+      <div>
+        <ng-container formArrayName="affiliations">
+          <ng-container *ngFor="let  affiliation of affiliations.controls; let index = index">
+            <div [formGroupName]="index">
+              <div fxLayout="row nowrap" fxLayoutGap="16px">
+                <div fxLayout="column nowrap" fxFlex="30">
+                  <mat-label class="upper-label">Affiliation</mat-label>
+                  <mat-form-field floatLabel='never' class="form-affiliations" appearance="fill">
+                    <input matInput formControlName="affiliation" placeholder="Affiliation">
+
+                    <mat-error *ngFor="let validation of affiliationErrorMessages">
+                      <div *ngIf="$any(affiliation).controls.country.hasError(validation.type)">
+                        {{validation.message}}
+                      </div>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxLayout="column nowrap"  fxFlex="28">
+                  <mat-label class="upper-label">City</mat-label>
+                  <mat-form-field floatLabel='never' class="form-affiliations" appearance="fill">
+                    <input matInput formControlName="city" placeholder="City">
+                    <mat-error *ngFor="let validation of cityErrorMessages">
+                      <div *ngIf="$any(affiliation).controls.country.hasError(validation.type)">
+                        {{validation.message}}
+                      </div>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxLayout="column nowrap" fxFlex="28">
+                  <mat-label class="upper-label">Country</mat-label>
+                  <mat-form-field floatLabel='never' class="form-affiliations" appearance="fill">
+                    <input matInput formControlName="country" placeholder="Country" [matAutocomplete]="auto1">
+                    <mat-autocomplete #auto1="matAutocomplete">
+                      <mat-option *ngFor="let option of filter($any(affiliation).controls.country.value)" [value]="option">
+                        {{option}}
+                      </mat-option>
+                    </mat-autocomplete>
+
+                    <mat-error *ngFor="let validation of countryErrorMessages">
+                      <div *ngIf="$any(affiliation).controls.country.hasError(validation.type)">
+                        {{validation.message}}
+                      </div>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <button class="remove-affiliation-btn" mat-stroked-button color="warn" (click)="removeAffiliation(index)" [disabled]="affiliations.controls.length==1">Delete</button>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+      <button class="form-affiliations" mat-flat-button color="primary" (click)="addAffiliation()">Add Affiliation</button>
+    </div>
+    <mat-card *ngIf="askremove" class="mat-card-delete">
+      <mat-card-content>
+        <p>Are you sure you want to remove this person from the article?</p>
+        <div class="btns-container" fxLayout="row wrap" fxLayoutGap="16px" align="end" fxLayoutAlign="flex-end center">
+          <button mat-stroked-button color="primary" (click)="askremove=false">No</button>
+          <button mat-stroked-button color="warn" (click)="removeCollaborator()">Yes</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" fxLayoutGap="8px">
+  <button mat-stroked-button [mat-dialog-close]>Cancel</button>
+  <button *ngIf="!isOwner" mat-stroked-button color="warn" (click)="askremove = true">Remove</button>
+  <button mat-flat-button color="primary" [disabled]="formSubmitDisabled()" (click)="editCollaborator()">Save</button>
+</mat-dialog-actions>
+
+
+
+
+

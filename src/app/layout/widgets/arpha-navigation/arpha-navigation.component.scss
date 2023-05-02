@@ -1,0 +1,181 @@
+@import "../../../../assets/colors";
+.toolbar {
+  min-height: 60px;
+}
+
+.toolbar-row {
+  display: flex;
+  flex-flow: row wrap;
+  min-height: 60px;
+  height: auto;
+  justify-content: flex-end;
+}
+
+.add-article-navigation {
+  float: right;
+  margin-right: 10px;
+  margin-left: auto;
+
+  .btn-start-new-project {
+    ::ng-deep {
+      .mat-button-focus-overlay {
+        display: none !important;
+      }
+    }
+  }
+}
+
+.notifications-component {
+  position: relative;
+  margin-right: 8px;
+  margin-left: 16px;
+
+  .mat-badge {
+    .mat-badge-content {
+      border: 2px solid white;
+    }
+  }
+}
+
+.profile-details {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+
+  .eye-icon,
+  .arrow-icon {
+    height: 28px;
+    margin-right: 22px;
+    display: flex;
+    align-items: center;
+    ::ng-deep .a {
+      fill: var(--color-00b1b2);
+      opacity: 1;
+    }
+    mat-icon {
+      color: var(--color-00b1b2);
+    }
+  }
+
+  .eye-icon {
+    cursor: pointer;
+  }
+  .text-dashbord-header{
+    font-size: 14px;
+    font-weight: normal;
+    color: $primary-green;
+    padding: 0 0 0 5px;
+animation: fade-out 1s;
+  }
+  @keyframes fade-in {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+  .arrow-icon {
+    margin-right: 8px !important;
+  }
+
+  .avatar {
+    height: 35px;
+    width: 35px;
+    background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
+    background-size: cover;
+    border: 1px solid var(--color-00b1b2);
+    // margin-right: 8px;
+    border-radius: 50%;
+  }
+}
+
+.logo {
+  display: flex;
+  position: relative;
+  align-items: center;
+  height: 60px;
+  margin-right: auto;
+
+  img {
+    width: 95px;
+  }
+
+  .app-version {
+    position: absolute;
+    top: calc(100% - 16px);
+    left: 0;
+    height: 12px;
+    line-height: 12px;
+    font-size: 9px;
+    color: var(--color-cacdd3);
+    z-index: 10;
+  }
+}
+
+.dropdown-btn {
+  padding-right: 0;
+
+  .mat-icon.expand-less {
+    display: none;
+  }
+
+  &[aria-expanded="true"] {
+    .mat-icon.expand-more {
+      display: none;
+    }
+
+    .mat-icon.expand-less {
+      display: inline-block;
+    }
+  }
+
+  ::ng-deep {
+    .mat-button-wrapper {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+
+  ::ng-deep .mat-button-focus-overlay {
+    display: none;
+  }
+}
+
+.text-dashbord-header {
+  font-size: 14px;
+  font-weight: normal;
+  color: var(--color-00b1b2);
+  padding: 0 0 0 5px;
+  animation: fade-out 1s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

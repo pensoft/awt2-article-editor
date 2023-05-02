@@ -1,0 +1,57 @@
+<h2 mat-dialog-title >Insert Video</h2>
+
+<mat-dialog-content>
+  <p >Enter video url. Attention url must be embeddable (youtube case: contain /embed) : https://www.youtube.com/embed/GDae7zmUHlc Tutorial on how to get embedded videos form youtube : https://www.youtube.com/watch?v=ZnuwB35GYMY&ab_channel=Techoist</p>
+  <div class="figure-component-edit">
+    <div class="row-container" fxLayout="row nowrap" fxLayoutGap="16px">
+      <div fxLayout="column nowrap" fxFlex="1 1 0">
+        <mat-label class="upper-label">URL</mat-label>
+        <mat-form-field class="file-url-control">
+          <input type="url" matInput [formControl]="urlFormControl"  #urlInputElement placeholder="http://example.url">
+          <!-- <mat-error *ngIf="urlFormControl.hasError('pattern') && !urlFormControl.hasError('required')">
+            Please enter a valid url.
+          </mat-error> -->
+          <mat-error *ngIf="urlFormControl.hasError('required')">
+            Url is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="column nowrap">
+        <mat-label class="upper-label">Media type</mat-label>
+        <mat-form-field class="type-edit-field" appearance="fill">
+          <mat-select [formControl]="typeFromControl">
+            <mat-option *ngFor="let type of types" [value]="type">
+              {{type}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="typeFromControl.hasError('required')">
+            Type is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div *ngIf="typeFromControl.value == 'video'">
+      <app-dropzone (uploaded)="fileIsUploaded($event)" [fileType]="'video/*'"></app-dropzone>
+    </div>
+    <div *ngIf="typeFromControl.value == 'embedded video'">
+      <app-dropzone [disabled]="true"></app-dropzone>
+    </div>
+    <div class="row-container">
+      <div class="figure-component-edit-preview">
+        <div *ngIf="typeFromControl.valid&&urlFormControl.valid">
+          <iframe *ngIf="typeFromControl.value == 'video'" [src]="urlFormControl.value | safe">
+          </iframe>
+          <iframe *ngIf="typeFromControl.value == 'embedded video'" [src]="this.videoUrl | safe">
+          </iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" fxLayoutGap="8px">
+  <button mat-stroked-button color="primary" (click)="onNoClick()">Cancel</button>
+  <button mat-flat-button color="primary" [disabled]="!typeFromControl.valid||!urlFormControl.valid" (click)="submitDialog()">Insert Video</button>
+</mat-dialog-actions>

@@ -1,0 +1,34 @@
+<h2 mat-dialog-title *ngIf="endNotesNumbers" class="title-margin-bottom">Endnotes</h2>
+
+<mat-dialog-content *ngIf="endNotesNumbers">
+  <div *ngIf="endNotesNumbers.length==0">
+    There are no endnotes right now. You can be the first one to add a note with the "Add Endnote" button.
+  </div>
+
+  <ng-container *ngIf="endNotesNumbers.length>0">
+    <div cdkDropList class="end-notes-list" (cdkDropListDropped)="drop($event)">
+      <div class="end-note-box" *ngFor="let endNoteNum of endNotesNumbers;let i = index" cdkDrag>
+
+        <mat-icon class="drag-icon">drag_indicator</mat-icon>
+
+        <div>
+          <div class="end-note-view">
+            <app-end-note [(endNote)]="endNotes![endNoteNum]" [endNoteIndex]="i"></app-end-note>
+          </div>
+          <div class="end-note-control-buttons button-group">
+            <button mat-stroked-button color="primary" (click)="editEndNote(endNotes![endNoteNum],i)">Edit</button>
+            <button mat-stroked-button color="warn" (click)="deleteEndNote(endNotes![endNoteNum],i)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</mat-dialog-content>
+
+<mat-dialog-actions *ngIf="endNotesNumbers" align="end" fxLayoutGap="8px">
+  <!-- <button mat-stroked-button [mat-dialog-close]>Cancel</button> -->
+  <button mat-stroked-button color="primary" (click)="addEndNote()">Add Note</button>
+  <button mat-flat-button color="primary" (click)="saveEndNotes()">Ok</button>
+</mat-dialog-actions>
+
+

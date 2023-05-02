@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Start Manuscript</h2>
+
+<div class="search-field-wrapper">
+  <form (keydown)="search(inputText)" fxFlex="100%" fxLayout="column" class="search-form">
+    <label>Select a Template</label>
+    <mat-form-field class="s mat-form-field-search" floatLabel="never" appearance="standard">
+      <input matInput type="text" #inputText placeholder="Search by name">
+      <button mat-flat-button color="primary" type="submit" matSuffix (click)="search(inputText)">
+        Search
+      </button>
+    </mat-form-field>
+  </form>
+</div>
+
+<mat-dialog-content class="fixed-dialog-content-height">
+
+  <div *ngIf="showError" class="error">No Layout selected.</div>
+
+  <div *ngIf="articleTemplates.length == 0">
+    There are no manuscripts found with this criteria
+  </div>
+
+  <mat-selection-list #topic [multiple]="false" [ngClass]="{'no-results': articleTemplates.length == 0}">
+    <mat-list-option *ngFor="let article of articleTemplates" [value]="article.id" class="border">
+      {{article.name}}
+    </mat-list-option>
+  </mat-selection-list>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" fxLayoutGap="8px">
+  <button mat-stroked-button [mat-dialog-close]>Cancel</button>
+  <!-- <button mat-stroked-button color="primary" (click)="closeManuscriptChoose()">Start Empty</button> -->
+  <button mat-flat-button color="primary" (click)="createManuscript(topic.selectedOptions.selected[0]?.value)">
+    Start Manuscript
+  </button>
+</mat-dialog-actions>

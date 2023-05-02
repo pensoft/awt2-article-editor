@@ -1,0 +1,109 @@
+<h2 mat-dialog-title class="title-margin-bottom">{{ isEditMode ? "Edit" : "Cite" }} Reference</h2>
+
+<div class="search-field-wrapper" *ngIf="!isEditMode">
+  <div class="mat-form-field-search-label">Search References</div>
+  <mat-form-field class="mat-form-field-search" appearance="fill">
+    <input type="text"
+           class="input-search"
+           placeholder="Start typing author, article name, etc…."
+           matInput
+           [formControl]="searchControl"
+           autocomplete="off"
+           #searchrefs>
+    <mat-icon matPrefix class="prefix-icon">search</mat-icon>
+  </mat-form-field>
+</div>
+
+<mat-dialog-content class="fixed-dialog-content-height">
+  <div class="all-refs-container">
+    <div class="mat-checkbox-group" fxLayout="column nowrap">
+      <ng-container *ngIf="!isEditMode">
+        <div class="ref-container" [ngClass]="{'edit-mode': isEditMode}" *ngFor="let ref of ydocRefsSubject | async">
+            <mat-checkbox class="ref-checkbox"
+            [checked]="isExist(ref)"
+            (change)="checkBoxChange($event.checked,ref)"
+            [color]='"primary"'>
+              <span class="ref-txt" [innerHTML]="ref.citation.textContent | makeTextBold : searchValue"></span>
+            </mat-checkbox>
+
+            <mat-form-field class="ref-cito-select" *ngIf="ref.refCiTOControl" appearance="fill" #referenceType>
+              <mat-select class="select-reference" [formControl]="ref.refCiTOControl">
+                  <mat-option *ngFor="let type of CiToTypes" [value]="type">
+                  {{type.label}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+        </div>
+      </ng-container>
+
+      <!-- If it's edit mode -->
+      <ng-container *ngIf="isEditMode">
+        <div class="ref-container" [ngClass]="{'edit-mode': isEditMode}" *ngFor="let ref of ydocRefsSubject | async">
+
+          <ng-container *ngIf="isExist(ref)">
+            <div class="ref-edit-mode">
+              <button mat-icon-button (click)="deleteCitation(ref.ref.id)" color="warn" title="Remove Citation" class="delete-citation">
+                  <mat-icon>delete</mat-icon>
+              </button>
+              <span class="ref-text" [innerHTML]="ref.citation.textContent | makeTextBold : searchValue"></span>
+            </div>
+
+            <mat-form-field class="ref-cito-select" *ngIf="ref.refCiTOControl" appearance="fill" #referenceType>
+              <mat-select class="select-reference" [formControl]="ref.refCiTOControl">
+                <mat-option *ngFor="let type of CiToTypes " [value]="type">
+                  {{type.label}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+          
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</mat-dialog-content>
+
+          <div class="citation-prev-container">
+              <mat-radio-group 
+                aria-label="Select an option" 
+                [formControl]="citationStyleControl"
+                class="radio-btns"
+                >
+                <mat-radio-button value="0" [checked]="this.citationStyle == 0">Author only</mat-radio-button>
+                <mat-radio-button value="1" [checked]="this.citationStyle == 1">Composite</mat-radio-button>
+                <mat-radio-button value="2" [checked]="this.citationStyle == 2">Supress author</mat-radio-button>
+                <mat-radio-button value="3" [checked]="this.citationStyle == 3">Label</mat-radio-button>
+                <mat-radio-button value="4" [checked]="this.citationStyle == 4">Numeric</mat-radio-button>
+              </mat-radio-group>
+              
+              <mat-form-field class="example-chip-list drag-form">
+                  <mat-chip-list #chipList cdkDropListGroup #citationsContainer>
+                      <div *ngFor="let citation of checkedRefs; let i = index" cdkDropList [cdkDropListData]="i" >
+                        <mat-chip 
+                        class="drag-element"
+                        [selectable]="true" 
+                        cdkDrag [cdkDragData]="i" 
+                        (cdkDragEntered)="dragEntered($event)" 
+                        [removable]="true" 
+                        (removed)="deleteCitation(citation.refCitationID)"
+                        >
+                        {{citation.text}}
+                        <mat-icon matChipRemove >cancel</mat-icon>
+                      </mat-chip>
+                    </div>
+                      <input 
+                      [matChipInputFor]="chipList" 
+                      [disabled]="true"
+                      >
+                  </mat-chip-list>
+              </mat-form-field>
+          </div>
+
+<mat-dialog-actions align="end" fxLayoutGap="8px">
+  <button mat-stroked-button (click)="closeDialog()">Cancel</button>
+  <button *ngIf="!isEditMode" mat-stroked-button color="primary" (click)="openAddNewRefToEditorDialog()">Add Reference</button>
+  <button mat-flat-button color="primary" [disabled]="isEditMode ? false : checkedRefs.length==0" (click)="citeSelectedRefs()">
+   {{ isEditMode ? "Save" : "Cite References" }}
+  </button>
+</mat-dialog-actions>

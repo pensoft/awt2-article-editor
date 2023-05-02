@@ -1,0 +1,94 @@
+<h2 mat-dialog-title>Add Reference</h2>
+
+<mat-dialog-content>
+  <div *ngIf="citating">
+    <div class="spinner-container-citating">
+      <div class="spinner-container-2" fxLayoutGap="row nowrap" fxLayoutAlign="center center">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!citating" class="search-container">
+    <div class="reference-options">
+      <div class="mat-form-field-search-label">Search references</div>
+      <mat-form-field class="select-ref-form-field mat-form-field-search" appearance="fill">
+        <input type="text"
+               placeholder="Start typing author, article name, etc…."
+               aria-label="References"
+               matInput
+               #trigger="matAutocompleteTrigger"
+               matAutocompletePosition="below"
+               [formControl]="searchReferencesControl"
+               [matAutocompleteConnectedTo]="origin"
+               [matAutocomplete]="auto">
+        <mat-icon matPrefix class="prefix-icon">search</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getReference($event)' [displayWith]="displayFn">
+          <ng-container>
+            <mat-option *ngIf="loading" class="is-loading">
+              <mat-spinner diameter="25"></mat-spinner>
+            </mat-option>
+          </ng-container>
+          <mat-option [class.demo-row-is-clicked]="option == externalSelection" (click)="select(option, 'localRef');$event.stopPropagation(); trigger.openPanel()"
+                      *ngFor="let option of filteredOptions | async" [value]="option">
+            <span class="option-status"></span>
+            <span class="option-title">{{option.refData.referenceData.title}}</span>
+            <span class="option-author">{{ option.refData.formioData.authors[0] ? (option.refData.formioData.authors[0].first || option.refData.formioData.authors[0].last || option.refData.formioData.authors[0].given) : '' }},
+              {{option.refData.referenceData.type}}</span>
+          </mat-option>
+          <ng-container *ngIf="searchData">
+            <mat-option [class.demo-row-is-clicked]="option == externalSelection" *ngFor="let option of searchData" [value]="option" (click)="select(option, 'external');$event.stopPropagation(); trigger.openPanel()">
+
+              <span class="option-status"></span>
+              <span class="option-title">{{option.ref.title}}</span>
+              <span class="option-author">
+                {{ option.ref.author[0] ? (option.ref.author[0].first || option.ref.author[0].last || option.ref.author[0].given) : '' }},
+                {{option.ref.type}}
+              </span>
+
+            </mat-option>
+          </ng-container>
+          <!--<div *ngIf="searchData">
+            <table mat-table [dataSource]="searchData" class="mat-elevation-z8 demo-table">
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef>Title</th>
+                <td mat-cell *matCellDef="let element">{{element.ref.title}}</td>
+              </ng-container>
+
+              <tr class="table-row" mat-row (click)="selected = row;select(row);referencesControl.setValue(null)"
+                  [class.demo-row-is-clicked]="row == selected" *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>-->
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="search-result">
+      <div matAutocompleteOrigin #origin="matAutocompleteOrigin"></div>
+      <!--<div *ngIf="loading">
+        <div class="spinner-container">
+          <div class="spinner-container-1">
+            <mat-spinner></mat-spinner>
+          </div>
+        </div>
+      </div>-->
+      <!--<div *ngIf="searchData">
+        <table mat-table [dataSource]="searchData" class="mat-elevation-z8 demo-table">
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let element">{{element.ref.title}}</td>
+          </ng-container>
+
+          <tr class="table-row" mat-row (click)="selected = row;select(row);referencesControl.setValue(null)"
+              [class.demo-row-is-clicked]="row == selected" *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>-->
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" fxLayoutGap="8px">
+  <button mat-stroked-button [mat-dialog-close]>Cancel</button>
+  <button mat-flat-button color="primary" (click)="addReference()" [disabled]="lastSelect == 'none'">Add Reference</button>
+</mat-dialog-actions>
+
+
+

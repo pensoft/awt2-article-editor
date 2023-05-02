@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Cite Table</h2>
+
+<mat-dialog-content>
+  <div #noselectionError [ngStyle]="{'display':error?'block':'none'}" class="selection-error">
+    You have not selected any tables.
+  </div>
+
+  <div class="mat-checkbox-group" fxLayout="column nowrap">
+    <mat-checkbox *ngFor="let tableId of tablesData;let i = index"
+                  class="example-margin"
+                  [checked]="selectedTables[i]"
+                  [color]='"primary"'
+                  (change)="setSelection($event.checked,tableId,i)"
+    >
+      Table {{i+1}}
+    </mat-checkbox>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" fxLayoutGap="8px">
+  <button mat-stroked-button [mat-dialog-close]>Cancel</button>
+  <button mat-stroked-button color="primary" (click)="addTable()">Add Table</button>
+  <button mat-flat-button color="primary" (click)="citateTables()">Cite Tables</button>
+</mat-dialog-actions>

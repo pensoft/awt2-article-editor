@@ -1,0 +1,98 @@
+<h2 mat-dialog-title class="title-margin-bottom">Add Reference</h2>
+
+<mat-dialog-content>
+  <mat-spinner class="loading-data-spinner" [ngStyle]="{display:loadingRefDataFromBackend?'block':'none'}">
+  </mat-spinner>
+  <mat-tab-group *ngIf="!loadingRefDataFromBackend" class="add-new-ref-tabs" (selectedTabChange)="tabChanged($event)">
+    <mat-tab label="Import tools">
+      <div class="tab0">
+
+        <div class="mat-form-field-search-label">Search in CrossRef, PubMed, RefBank, Agris, DataCite & GNUB</div>
+        <mat-form-field class="search-in-refindit mat-form-field-search" appearance="fill">
+          <input type="text"
+                  placeholder="Type here..."
+                  aria-label="References"
+                  matInput
+                  #trigger="matAutocompleteTrigger"
+                  matAutocompletePosition="below"
+                  [formControl]="searchReferencesControl"
+                  [matAutocomplete]="auto"
+                  #refinditsearch>
+          <mat-icon matPrefix class="prefix-icon">search</mat-icon>
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <ng-container>
+              <mat-option *ngIf="loading" class="is-loading">
+                <mat-spinner diameter="25"></mat-spinner>
+              </mat-option>
+            </ng-container>
+            <ng-container *ngIf="searchData.length > 0 && !searchData[0].noResults">
+              <mat-option class="refindit-autocomplete-option"
+              [class.demo-row-is-clicked]="option == externalSelection" *ngFor="let option of searchData" [value]="option" (click)="select(option, 'external');$event.stopPropagation(); trigger.openPanel()">
+                <div class="option-refindit-view">
+                  <div class="refindit-first-author">{{option.ref.autocompleteView.firstAuthor}}</div>
+                  <div class="refindit-year">{{option.ref.autocompleteView.year}}</div>
+                  <div class="refindit-title">{{option.ref.autocompleteView.title}}</div>
+                  <div class="refindit-source">{{option.ref.autocompleteView.source}}</div>
+                </div>
+              </mat-option>
+            </ng-container>
+            <ng-container  *ngIf="searchData.length > 0 && searchData[0].noResults">
+              <mat-option class="refindit-autocomplete-option"
+              [class.demo-row-is-clicked]="option == externalSelection" *ngFor="let option of searchData" [value]="option" (click)="$event.stopPropagation();">
+                <div class="option-refindit-view">
+                  <div class="refindit-first-author">{{option.noResults}}</div>
+                </div>
+              </mat-option>
+            </ng-container>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="import-manually-container">
+        <div class="mat-form-field-search-label">Select references from Zotero, EndNote or RefManager XML file</div>
+        <p>
+          Please follow the instructions to prepare files from
+          <a target="_blank" href="http://arpha.pensoft.net/tips/Zotero">Zotero</a>,
+          <a target="_blank" href="http://arpha.pensoft.net/tips/EndNote">EndNote</a> or
+          <a target="_blank" href="http://arpha.pensoft.net/tips/Reference-manager">RefManager</a>.
+          If you encounter any issues, please send an email to
+          <a href="mailto:development@pensoft.net">development@pensoft.net</a> and attach the file.
+        </p>
+        <div class="import-manually-actions">
+          <input type="file" id="reference_file" (change)="onfileInputChange($event)">
+          <label for="reference_file">Upload File</label>
+          <button mat-flat-button color="primary" (click)="onFileUpload()" [disabled]="(file | json) != '{}'">Parse File</button>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Manual input">
+      <div class="tab1">
+        <mat-label class="upper-label">Types</mat-label>
+        <mat-form-field #referenceType class="select-ref-form-field">
+          <mat-select [formControl]="referenceFormControl" class="select-reference" (selectionChange)="generateFormIOJSON(referenceFormControl.value)">
+            <mat-option *ngFor="let type of referenceTypesFromBackend " [value]="type">
+              {{type.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--  <mat-label class="upper-label">Citation Typing Ontology</mat-label>
+        <mat-form-field appearance="fill" #referenceType class="select-ref-form-field">
+          <mat-select [formControl]="citoFormControl" class="select-reference" placeholder="Citation Typing Ontology">
+            <mat-option *ngFor="let type of CiToTypes " [value]="type">
+              {{type.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <div class="formio-container">
+          <div [formGroup]="referenceForms" *ngIf="formIOSchema" class="formio-inner-container">
+            <mat-formio #formio [form]="formIOSchema" (change)="onChange($event)"></mat-formio>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" fxLayoutGap="8px">
+  <button mat-stroked-button (click)="closeDialog()">Cancel</button>
+  <button mat-flat-button color="primary" [disabled]="tabIndex!=1||!dataSave||!isValid||!isModified" (click)="onSubmit()">Save</button>
+</mat-dialog-actions>

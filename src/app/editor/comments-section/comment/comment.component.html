@@ -1,0 +1,122 @@
+<mat-card class="comment-box" (click)="selectComment()">
+  <mat-card-header>
+    <!-- <div mat-card-avatar class="comment-avatar"></div> -->
+    <!--    <app-avatar mat-card-avatar class="comment-avatar"></app-avatar>-->
+    <!--    {{userComment!.initialComment | json}}-->
+    <div class="mat-card-avatar-container">
+      <ngx-avatar mat-card-avatar size="36" [fgColor]="currUserId == userComment!.initialComment.userData.id?'white':userComment!.initialComment.userData.userContrastColor" [bgColor]="currUserId == userComment!.initialComment.userData.id?'#00B1B2':userComment!.initialComment.userData.userColor" [gravatarId]="userComment!.initialComment.userData.email" [name]="userComment!.initialComment.userData.name"></ngx-avatar>
+      <span><img src="./assets/icons/comments-small.svg" alt="{{userComment!.initialComment.userData.name}}" /></span>
+    </div>
+    <mat-card-title class="comment-title">{{userComment!.initialComment.userData.name}}</mat-card-title>
+    <mat-card-subtitle class="comment-subtitle" >{{userComment!.initialComment.date | date:'medium'}}</mat-card-subtitle>
+
+    <div *ngIf="ydocService.curUserAccess&&ydocService.curUserAccess!='View only'" class="header-actions">
+      <ng-container *ngIf="!activeReply&&authService.currentUserSubject | async as user">
+        <button mat-flat-button color="primary" class="main-resolve-btn"
+                #mainResolveBtn
+                *ngIf="!mobileVersion && userComment!.initialComment.userData.email == user.email"
+                (click)="deleteComment(false, '')">
+          Resolve
+        </button>
+      </ng-container>
+      <ng-container *ngIf="authService.currentUserSubject | async as user">
+        <button *ngIf="!mobileVersion&&userComment!.initialComment.userData.email == user.email" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_horiz</mat-icon>
+        </button>
+      </ng-container>
+
+
+      <mat-menu #menu="matMenu">
+        <button (click)="editComment(userComment!.initialComment.id, userComment!.initialComment.comment)" mat-menu-item>Edit</button>
+        <button (click)="deleteComment(true, userComment.initialComment.comment)" mat-menu-item>Delete</button>
+      </mat-menu>
+    </div>
+
+  </mat-card-header>
+  <mat-card-content>
+    <div class="selected-text">
+      <div class="selected-text-title">Selected text:</div>
+      <div class="selected-text-content">{{comment!.commentTxt}}</div>
+    </div>
+
+    <div #content [ngClass]="{
+      'comment-content':true,
+      'comment-elipsis-content':!initialShowMore,
+      'comment-full-content':initialShowMore
+    }" ><span #commentSpan [innerHtml]="userComment!.initialComment.comment | email"></span></div>
+    <a (click)="initialShowMore = !initialShowMore;showMoreLessClick()" [ngClass]="{
+      'morelessBtn':true,
+      'comment-display-none':commentSpan.offsetWidth < 306 && commentSpan.offsetHeight < 20
+    }">{{initialShowMore ? 'Show less': 'Show more' }}</a>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="comment-box-replies" (click)="selectComment()" *ngFor="let comment of userComment!.commentReplies;let index=index">
+
+  <mat-card-header>
+
+    <div class="mat-card-avatar-container">
+      <ngx-avatar mat-card-avatar size="36" [fgColor]="currUserId == comment.userData.id?'white':comment.userData.userContrastColor"  [bgColor]="currUserId == comment.userData.id?'#00B1B2':comment.userData.userColor" [gravatarId]="comment.userData.email"  [name]="comment.userData.name"></ngx-avatar>
+      <span><img src="./assets/icons/comments-small.svg" alt="{{comment.userData.name}}" /></span>
+    </div>
+
+    <!--  <div mat-card-avatar class="comment-avatar"></div> -->
+    <mat-card-title class="comment-title">{{comment.userData.name}}</mat-card-title>
+    <mat-card-subtitle class="comment-subtitle">{{comment.date|date:'medium'}}</mat-card-subtitle>
+
+    <div class="header-actions">
+      <ng-container *ngIf="authService.currentUserSubject | async as user">
+        <button *ngIf="!mobileVersion && comment.userData.email == user.email" mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+      </ng-container>
+
+      <mat-menu #menu="matMenu">
+        <button (click)="editReply(comment.id, comment.comment)" mat-menu-item>Edit</button>
+        <button (click)="deleteReply(comment.id, comment.comment)" mat-menu-item>Delete</button>
+      </mat-menu>
+    </div>
+
+  </mat-card-header>
+  <mat-card-content>
+
+    <div #content [ngClass]="{'comment-content':true,'comment-elipsis-content':!repliesShowMore[index],'comment-full-content':repliesShowMore[index]}"><span #commentSpan [innerHTML]="comment.comment|email"></span></div>
+    <a (click)="repliesShowMore[index] = !repliesShowMore[index];showMoreLessClick()" [ngClass]="{'morelessBtn':true,'comment-display-none':commentSpan.offsetWidth < 295 && commentSpan.offsetHeight < 20}">{{repliesShowMore[index] ? 'Show less': 'Show more' }}</a>
+
+
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="comment-box-form">
+  <mat-card-content>
+    <div *ngIf="ydocService.curUserAccess&&ydocService.curUserAccess!='View only'">
+
+      <div class="reply-container" #ReplyDiv>
+        <mat-form-field appearance="outline" class="reply-form-field">
+          <input #input matInput
+                 class="reply-input"
+                 type="text"
+                 placeholder="Write a reply..."
+                 autocomplete="off"
+                 [formControl]="replyFormControl"
+                 (focus)="showReplyFocusHandle(ReplyDiv, autocomplete)"
+                 (blur)="hideReplyBlurHandle(ReplyDiv)"
+                 (keydown)="autocomplete.keyHandle($event)">
+          <app-collaborators-auto-complete (clickOutside)="clickOutsideHandler($event, autocomplete)" [(commentmarkId)]="comment.commentMarkId" [(inputFormControl)]="replyFormControl" #autocomplete></app-collaborators-auto-complete>
+          <mat-icon matSuffix class="comment-reply-field-icon">alternate_email</mat-icon>
+        </mat-form-field>
+
+        <div class="comment-btns-container">
+          <div *ngIf="activeReply" class="comment-btns" align="end" fxLayoutGap="12px">
+            <button mat-stroked-button (click)="cancelReplyBtnHandle(ReplyDiv)">Cancel</button>
+            <button mat-flat-button color="primary"
+                    (click)="autocomplete.canFinishComment(commentReplyBtnHandle,[ReplyDiv])"
+                    [disabled]="input.value.length === 0">Reply</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </mat-card-content>
+</mat-card>

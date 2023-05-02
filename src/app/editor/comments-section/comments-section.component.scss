@@ -1,0 +1,11 @@
+.all-comments-container {
+  position: relative;
+  background-color: var(--color-ffffff);
+}
+
+.comments-wrapper {
+  height: calc(100% - 44px);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 100%;
+}

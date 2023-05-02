@@ -1,0 +1,32 @@
+<h2 mat-dialog-title *ngIf="figuresNumbers" class="title-margin-bottom">Figures</h2>
+
+<mat-dialog-content *ngIf="figuresNumbers">
+  <div *ngIf="figuresNumbers.length==0">There are no figures right now.You can be the first one to add a figure with the
+    "Add Figure" button.
+  </div>
+
+  <ng-container *ngIf="figuresNumbers.length>0">
+    <div cdkDropList class="figures-list" (cdkDropListDropped)="drop($event)">
+      <div class="figure-box" *ngFor="let figure of figuresNumbers;let i = index" cdkDrag>
+
+        <mat-icon class="drag-icon">drag_indicator</mat-icon>
+
+        <div>
+          <div class="figure-view">
+            <app-figure [(figure)]="figures![figure]" [figureIndex]="i"></app-figure>
+          </div>
+          <div class="figure-control-buttons button-group">
+            <button mat-stroked-button color="primary" (click)="editFigure(figures![figure],i)">Edit</button>
+            <button mat-stroked-button color="warn" (click)="deleteFigure(figures![figure],i)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</mat-dialog-content>
+
+<mat-dialog-actions *ngIf="figuresNumbers" align="end" fxLayoutGap="8px">
+  <!-- <button mat-stroked-button (click)="cancelFiguresEdit()">Cancel</button> -->
+  <button mat-stroked-button color="primary" (click)="addFigure()">Add Figure</button>
+  <button mat-flat-button color="primary" (click)="saveFigures()">Ok</button>
+</mat-dialog-actions>

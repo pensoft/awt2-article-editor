@@ -1,0 +1,40 @@
+<h2 mat-dialog-title *ngIf="supplementaryFilesNumbers" class="title-margin-bottom">Supplementary Files</h2>
+
+<mat-dialog-content *ngIf="supplementaryFilesNumbers">
+  <div *ngIf="supplementaryFilesNumbers.length==0">
+    There are no supplementary files right now.You can be the first one to add a file with the "Add Supplementary File"
+    button.
+  </div>
+
+  <ng-container *ngIf="supplementaryFilesNumbers.length>0">
+    <div cdkDropList class="supplementary-files-list" (cdkDropListDropped)="drop($event)">
+      <div class="supplementary-file-box" *ngFor="let supplementaryFileNum of supplementaryFilesNumbers;let i = index"
+           cdkDrag>
+
+        <mat-icon class="drag-icon">drag_indicator</mat-icon>
+
+        <div>
+          <div class="supplementary-file-view">
+            <app-supplementary-file [(supplementaryFile)]="supplementaryFiles![supplementaryFileNum]"
+                                    [supplementaryFileIndex]="i"></app-supplementary-file>
+          </div>
+          <div class="supplementary-file-control-buttons button-group">
+            <button mat-stroked-button color="primary" (click)="editSupplementaryFile(supplementaryFiles![supplementaryFileNum],i)">
+              Edit
+            </button>
+            <button mat-stroked-button color="warn" (click)="deleteSupplementaryFile(supplementaryFiles![supplementaryFileNum],i)">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</mat-dialog-content>
+
+<mat-dialog-actions *ngIf="supplementaryFilesNumbers" align="end" fxLayoutGap="8px">
+  <!-- <button mat-stroked-button [mat-dialog-close]>Cancel</button> -->
+  <button mat-stroked-button color="primary" (click)="addSupplementaryFile()">Add File</button>
+  <button mat-flat-button color="primary" (click)="saveSupplementaryFiles()">Ok</button>
+</mat-dialog-actions>
+

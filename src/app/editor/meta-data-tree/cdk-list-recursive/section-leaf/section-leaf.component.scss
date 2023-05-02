@@ -1,0 +1,489 @@
+// level 0 css
+$textFontWeight: 600;
+$textFontSize: 14px;
+$itemHeight: 34px;
+::ng-deep .drag_btn {
+  height: 20px !important;
+  width: 20px !important;
+  line-height: 0;
+
+  .mat-icon {
+    font-size: 17px;
+    vertical-align: baseline;
+  }
+}
+
+::ng-deep .addSectionBtn {
+  mat-icon {
+    transform: scale(1.2);
+  }
+}
+
+::ng-deep .cant-drop {
+  background-color: rgb(245, 217, 217) !important;
+  border-color: rgb(250, 141, 141) !important;
+}
+
+::ng-deep .matIcon {
+  font-size: 18px !important;
+}
+
+::ng-deep .section_btn_outerList {
+  height: 34px !important;
+  width: 34px !important;
+  padding: 0px;
+  line-height: 0px;
+}
+
+.section_btn_outerList {
+  color: #223361;
+  background-color: white;
+  margin: 0 4px;
+  z-index: 5;
+  vertical-align: middle;
+  box-shadow: 0 2px 4px #1BB1B229;
+}
+
+::ng-deep .section_btn {
+  height: 30px !important;
+  width: 30px !important;
+  padding: 0;
+  line-height: 0;
+}
+
+::ng-deep .section_btn_nestedList {
+  height: 34px !important;
+  width: 34px !important;
+  padding: 0px;
+  line-height: 0px;
+}
+
+.sectionBorderNestedInactive {
+  display: inline-flex;
+  padding: 0 0 0 17px;
+  border-left: 1px solid var(--color-00b1b2);
+  height: 32px;
+  z-index: 4;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sectionBorderNested {
+  display: inline-flex;
+  background-color: white;
+  height: 32px;
+  z-index: 10;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  padding: 0 0 0 17px;
+  margin: 0 0 0 1px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: 0 2px 4px #1bb1b229;
+}
+
+.sectionBorderListNestedInactive {
+  display: inline-flex;
+  margin: 0;
+  padding: 0 0 0 13px;
+  height: 32px;
+  z-index: 4;
+  width: 100%;
+  position: relative;
+  border-left: 1px solid var(--color-00b1b2);
+  box-sizing: border-box;
+  background: var(--color-f9fafc);
+}
+
+.sectionBorderListNested {
+  display: inline-flex;
+  background-color: var(--color-ffffff);
+  height: 32px;
+  z-index: 10;
+  position: relative;
+  width: 100%;
+  padding: 0 0 0 13px;
+  border-left: 1px solid var(--color-00b1b2);
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px #1bb1b229;
+}
+
+.sectionBorderListItem {
+  display: inline-flex;
+  background-color: var(--color-ffffff);
+  width: 100%;
+  z-index: 10;
+  position: relative;
+  vertical-align: middle;
+  height: $itemHeight;
+  padding: 0 0 0 4px;
+  box-shadow: 0 2px 4px #1BB1B229;
+  box-sizing: border-box;
+}
+
+.sectionBorderListItemInactive {
+  display: inline-flex;
+  vertical-align: middle;
+  height: $itemHeight;
+  width: 100%;
+  z-index: 4;
+  position: relative;
+  padding: 0 0 0 4px;
+  background: var(--color-f9fafc);
+  box-sizing: border-box;
+}
+
+.sectionBorderInactive {
+  display: inline-flex;
+  padding-left: 30px;
+  height: $itemHeight;
+  z-index: 4;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.vertical_line_nestedList {
+  border-left: 1px solid var(--color-00b1b2);
+  display: inline;
+  position: absolute;
+  height: 100%;
+}
+
+.sectionBorder {
+  display: inline-flex;
+  padding-left: 30px;
+  background-color: white;
+  z-index: 10;
+  position: relative;
+  height: $itemHeight;
+  width: 100%;
+  box-shadow: 0 2px 4px #1BB1B229;
+  box-sizing: border-box;
+}
+
+::ng-deep .expandBTN {
+  height: 20px !important;
+  width: 20px !important;
+  margin: 0 0 0 10px;
+  align-self: center;
+  line-height: 0 !important;
+
+  .mat-icon {
+    font-size: 22px !important;
+    line-height: 20px !important;
+    width: 20px;
+    height: 20px;
+    vertical-align: baseline;
+  }
+}
+
+.drag_btn {
+  cursor: move;
+}
+
+.drag_btn_leaf_node {
+  position: absolute;
+  left: 0;
+  align-self: center;
+
+  .mat-icon {
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+  }
+}
+
+.drag_btn_list_node {
+  position: absolute;
+  left: 0;
+  align-self: center;
+
+  .mat-icon {
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+  }
+}
+
+.example-list-dropdownbox {
+  display: block;
+}
+
+.text-placeholder-nested {
+  border-left: 2px solid #6cd0d2;
+  padding-left: 8px;
+  z-index: 3;
+  display: initial;
+  position: absolute;
+  border-bottom: 2px solid #6cd0d2;
+  transform: translate(17px, -24px);
+  height: 36px;
+}
+
+.section_btn {
+  color: #223361;
+  background-color: white;
+  margin-right: 1px;
+  z-index: 5;
+  margin-left: 2px;
+  box-shadow: 0px 1px 1px -3px rgb(0 177 178 / 20%), 0px 2px 2px 0px rgb(0 177 178 / 20%), 0px 1px 1px 0px rgb(0 177 178 / 20%);
+}
+
+.node-box-dropdownbox {
+  position: relative;
+  font-size: $textFontSize;
+  font-weight: $textFontWeight;
+  line-height: 20px;
+  color: #223361;
+  padding: 0 42px 0 0;
+  margin: 8px 0;
+}
+
+.node-box {
+  position: relative;
+  font-size: $textFontSize;
+  font-weight: $textFontWeight;
+  line-height: 20px;
+  color: #223361;
+  padding: 0 42px 0 0;
+  margin: 8px 0;
+}
+
+.cdk-drag-preview {
+  background-color: transparent;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-box:last-child {
+  border: none;
+}
+
+.outer-list.cdk-drop-list-dragging .node-box:not( .border-view) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.outer-list.cdk-drop-list-dragging .node-box-dropdownbox:not(.border-view) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.nested-list.cdk-drop-list-dragging .node-box-nested:not(.border-view) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.nested-list.cdk-drop-list-dragging .node-box-dropdownbox-nested:not( .border-view) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.border-placeholder {
+  .border-view {
+    background: #e0f3f4;
+    border-style: dashed;
+    border-radius: 6px;
+    border-width: 2px;
+    border-color: #1ebabb;
+    margin-left: 3px;
+    min-height: 28px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.border-placeholder-nested {
+  .border-view {
+    background: #e0f3f4;
+    border-style: dashed;
+    border-radius: 6px;
+    border-width: 2px;
+    border-color: #1ebabb;
+    min-height: 28px;
+    margin-left: 3px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.border {
+  position: relative;
+  letter-spacing: 0;
+}
+
+.expand_more {
+  color: #09b4b4;
+}
+
+// level > 0 css
+.node-box-nested {
+  position: relative;
+  color: #223361;
+  height: 32px;
+  font-size: 13px;
+  font-weight: $textFontWeight;
+}
+
+.node-box-dropdownbox-nested {
+  position: relative !important;
+  color: #223361;
+  font-size: 13px;
+  font-weight: $textFontWeight;
+  //padding-left: 20px;
+}
+
+.section_btn_container {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 4px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 100%;
+  z-index: 5;
+  width: 42px;
+  transform: translateY(-50%);
+}
+
+.drag_btn_leaf_node_nested {
+  position: absolute;
+  left: 0;
+  align-self: center;
+
+  .mat-icon {
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+  }
+}
+
+.drag_btn_list_node_nested {
+  position: absolute;
+  left: 0;
+  align-self: center;
+
+  .mat-icon {
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+  }
+}
+
+.section_btn_nestedList {
+  color: #223361;
+  background-color: white;
+  margin: 0 4px;
+  z-index: 5;
+  vertical-align: top;
+  box-shadow: 0 2px 4px #1BB1B229;
+}
+
+::ng-deep .expandBTNNested {
+  height: 20px !important;
+  width: 20px !important;
+  align-self: center;
+  line-height: 0 !important;
+  margin: 0 0 0 2px;
+
+  .mat-icon {
+    height: 20px;
+    width: 20px;
+    font-size: 20px;
+    line-height: 20px;
+    vertical-align: baseline;
+  }
+}
+
+.example-list-dropdownbox-nested {
+  display: block;
+}
+
+.dropdown-wrapper {
+  height: 32px;
+}
+
+.selectedEditor {
+  background-color: #e4f6f6;
+  z-index: 1;
+}
+
+.selectedEditorList {
+  font-weight: 700;
+  background-color: #e4f6f6;
+}
+
+.selectedEditorNestedLeaf {
+  background-color: #e4f6f6;
+  z-index: 1;
+}
+
+.selectedEditorNestedList {
+  background-color: #e4f6f6;
+  font-weight: 700;
+}
+
+.text-placeholder {
+  border-left: 1px solid var(--color-00b1b2);
+  padding-left: 11px;
+  z-index: 3;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 16px;
+  z-index: 5;
+  border-bottom: 1px solid var(--color-00b1b2);
+}
+
+.text-section-div[contenteditable=true], .text-section-div-nested[contenteditable=true] {
+  text-overflow: inherit;
+  box-shadow: none;
+  outline: none;
+  border: 0;
+}
+
+::ng-deep .text-section-div-nested {
+  align-self: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  direction: ltr;
+  white-space: nowrap;
+  flex-grow: 1;
+  cursor: text;
+  margin: 0 4px 0 2px;
+  p, h1, h2, h3, h4, h5, h6, form-field{
+    display:inline !important;
+  }
+}
+
+::ng-deep .make-block-nodes-inline {
+  display: inline;
+  div, p, h1, h2, h3, h4, h5, h6, form-field{
+    display:inline !important;
+  }
+}
+
+::ng-deep .text-section-div {
+  align-self: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  direction: ltr;
+  white-space: nowrap;
+  flex-grow: 1;
+  cursor: text;
+  margin: 0 4px;
+  p, h1, h2, h3, h4, h5, h6, form-field{
+    display:inline !important;
+  }
+}
+
+.text-section-list-item-div {
+  align-self: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+.outer-list {
+  padding-top: 41px;
+}

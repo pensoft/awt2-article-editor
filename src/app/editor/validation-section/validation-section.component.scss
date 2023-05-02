@@ -1,0 +1,163 @@
+::ng-deep .cancel-btn-div {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 34px;
+
+  arpha-button {
+    button {
+      width: 146px !important;
+    }
+  }
+}
+
+:host .sillySpinner {
+  min-height: 160px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.spinnerSpace {
+  height: 116px !important;
+  margin-top: 33px;
+  margin-bottom: 32px;
+}
+
+.all-error-messages {
+  margin: 0 16px;
+  border-bottom: 1px solid #e3e3e3;
+
+  .error-type {
+    font-size: 17px;
+    color: #e06989;
+    font-weight: bold;
+  }
+}
+
+.validate-with-errors {
+  margin-right: auto !important;
+  margin-left: auto;
+  padding-bottom: 34px;
+  width: fit-content;
+  display: block;
+}
+
+.succes-img {
+  display: block;
+  width: 50%;
+  margin: 16px auto 0 auto;
+}
+
+
+.succes {
+  width: 100%;
+  padding: 0 16px 34px 16px;
+  color: black;
+  text-align: center;
+}
+
+.spinnerImg {
+  display: block;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.persentage {
+  width: calc(100% - 32px);
+  margin: 0 auto;
+  color: #cacdd3;
+}
+
+mat-progress-bar {
+  width: calc(100% - 32px);
+  margin: 0 auto;
+}
+
+p {
+  margin: 16px 16px 34px 16px;
+  text-align: center;
+}
+
+.mat-card {
+  height: fit-content;
+  box-shadow: none !important;
+  padding: 0 16px;
+
+  ::ng-deep {
+    .mat-card-header {
+      width: 100%;
+      justify-content: flex-start;
+      flex-flow: row nowrap;
+      border-bottom: 1px solid #e3e3e3;
+
+      .mat-card-header-text {
+        display: inline-flex;
+        align-items: center;
+        height: 42px;
+        margin: 0;
+
+        .mat-card-title {
+          display: inline-flex;
+          gap: 8px;
+          margin: 0;
+          font: normal normal normal 14px/19px Open Sans;
+          letter-spacing: 0;
+          color: #223361;
+          opacity: 1;
+
+          .mat-icon {
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+    }
+  }
+
+  .mat-card-subtitle {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    line-height: 16px;
+    margin: 0;
+    padding: 16px 0 8px 0;
+    font-size: 12px;
+    color: #aeaeae;
+  }
+
+ .mat-card-content {
+
+    .image-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 16px;
+
+      img {
+        margin: 0;
+        width: 98px;
+        height: 92px;
+      }
+    }
+
+    p {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .mat-card-actions {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 18px 0 34px 0;
+  }
+}
+
+.number-of-characters {
+  font-size: 12px;
+  color: #aeaeae;
+  text-align: center;
+  padding: 8px 16px 34px 16px;
+}

@@ -1,0 +1,56 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "target": "es2017",
+    "module": "es2020",
+    "lib": [
+      "es2019",
+      "dom"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@app/*": ["./src/app/*"],
+      "@env": ["src/environments/environment"],
+      "@shared/*": ["src/app/shared/*"],
+      "@core/*": ["src/app/core/*"],
+      "@features/*": ["src/app/features/*"],
+      "@assets/*": ["src/assets/*"],
+      "@errors/*": ["src/app/errors/*"],
+      "@metronic/*": ["src/app/_metronic/*"],
+      "path": [
+        "./node_modules/path-browserify"
+      ],
+      "stream":[
+        "./node_modules/stream-browserify"
+      ],
+      "fs":[
+        "./node_modules/browserify-fs"
+      ]
+    },
+    "types": [ "node" ],
+    "typeRoots": [ "../node_modules/@types" ],
+  },
+  "angularCompilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "esModuleInterop": true,
+}
